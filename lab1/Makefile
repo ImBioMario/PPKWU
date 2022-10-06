@@ -1,14 +1,17 @@
+docker_name:=ppkwu_lab1_python
+container_name:=ppkwu_lab1_container_python
+
 docker_build:
 	echo "Prepare docker here..."
-	docker build -t ppkwu_lab1:latest .
+	docker build -t $(docker_name):latest .
 docker_start:
 	echo "Start docker here..."
-	docker run -p 4080:4080 --name ppkwu_lab1_container ppkwu_lab1:latest &
+	docker run -p 4080:4080 --name $(container_name) $(docker_name):latest &
 docker_stop:
 	echo "Stop docker here..."
-	docker kill ppkwu_lab1_container
-	docker container rm ppkwu_lab1_container
+	docker kill $(container_name)
+	docker container rm $(container_name)
 docker_clean:
 	echo "Clean docker here..."
-	-docker container rm ppkwu_lab1_container
-	docker image rm ppkwu_lab1
+	-docker container rm $(container_name)
+	docker image rm $(docker_name)
