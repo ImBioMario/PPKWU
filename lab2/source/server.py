@@ -6,12 +6,20 @@ import datetime
 from threading import local
 
 #print('source code for "http.server":', http.server.__file__)
+default_message = "Hello World!"
+
+local_time = datetime.datetime.now()
+time_message = str(local_time.strftime('%X'))
+
+rev_message = ""
+
+
 
 class web_server(http.server.SimpleHTTPRequestHandler):
     
     def do_GET(self):
 
-        print(self.path)
+        print('PATH ->> ' + self.path)
         local_time = datetime.datetime.now()
         local_time_string = str(local_time.strftime('%X'))
         message = 'Hello world! \n' + local_time_string
@@ -21,7 +29,18 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()            
-            self.wfile.write(bytes(message.encode('utf-8')))
+            self.wfile.write(bytes(default_message.encode('utf-8')))
+        elif self.path.startswith('/cmd'):
+            self.protocol_version = 'HTTP/1.1'
+            self.send_response(200)
+            self.send_header("Content-type", "text/html; charset=UTF-8")
+            self.end_headers()   
+            split_path = self.path.split('=')
+            if split_path[1] == 'time':
+                self.wfile.write(bytes(time_message.encode('utf-8')))
+
+            #self.wfile.write(bytes(message.encode('utf-8')))
+        
         else:
             super().do_GET()
     
