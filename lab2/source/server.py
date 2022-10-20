@@ -37,10 +37,13 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(bytes(time_message.encode('utf-8')))
             if split_path[1].startswith('rev'):
                 rev_command_split = self.path.split('&')
-                if rev_command_split[1].startswith('str'):
-                    str_command_split = rev_command_split[1].split('=')
-                    rev_message = str_command_split[1][::-1]
-                    self.wfile.write(bytes(rev_message.encode('utf-8')))
+                if len(rev_command_split)>1:
+                    if rev_command_split[1].startswith('str'):
+                        str_command_split = rev_command_split[1].split('=')
+                        if len(str_command_split) > 1:
+                            rev_message = str_command_split[1][::-1]
+                            self.wfile.write(bytes(rev_message.encode('utf-8')))
+                
         
         else:
             super().do_GET()
