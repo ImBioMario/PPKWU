@@ -1,5 +1,5 @@
-docker_name:=ppkwu_lab1_python
-container_name:=ppkwu_lab1_container_python
+docker_name:=ppkwu_lab2_python
+container_name:=ppkwu_lab2_container_python
 
 docker_build:
 	echo "Prepare docker here..."
@@ -15,3 +15,13 @@ docker_clean:
 	echo "Clean docker here..."
 	-docker container rm $(container_name)
 	docker image rm $(docker_name)
+
+docker_tidy:
+	echo "Stop docker here..."
+	docker kill $(container_name)
+	docker container rm $(container_name)
+	echo "Clean docker here..."
+	-docker container rm $(container_name)
+	docker image rm $(docker_name)
+	echo "Prepare docker here..."
+	docker build -t $(docker_name):latest .
