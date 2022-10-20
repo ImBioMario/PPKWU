@@ -11,9 +11,6 @@ default_message = "Hello World!"
 local_time = datetime.datetime.now()
 time_message = str(local_time.strftime('%X'))
 
-rev_message = ""
-
-
 
 class web_server(http.server.SimpleHTTPRequestHandler):
     
@@ -38,8 +35,12 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             split_path = self.path.split('=')
             if split_path[1] == 'time':
                 self.wfile.write(bytes(time_message.encode('utf-8')))
-
-            #self.wfile.write(bytes(message.encode('utf-8')))
+            if split_path[1].startswith('rev'):
+                rev_command_split = self.path.split('&')
+                if rev_command_split[1].startswith('str'):
+                    str_command_split = rev_command_split[1].split('=')
+                    rev_message = str_command_split[1][::-1]
+                    self.wfile.write(bytes(rev_message.encode('utf-8')))
         
         else:
             super().do_GET()
