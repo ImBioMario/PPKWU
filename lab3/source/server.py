@@ -43,13 +43,13 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.end_headers()            
             self.wfile.write(bytes(default_message.encode('utf-8')))
         elif self.path.startswith('/str='):
-            string_to_parse = self.path.split('=')[1]
-
+            string_to_parse = str(self.path.split('/str=')[1])
+            json_string = generate_json_string(parameter_names, str_statistics(string_to_parse))
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()   
-            self.wfile.write(bytes(string_to_parse.encode('utf-8')))
+            self.wfile.write(bytes(json_string.encode('utf-8')))
             #self.wfile.write(bytes(default_message.encode('utf-8')))
 
         else:
