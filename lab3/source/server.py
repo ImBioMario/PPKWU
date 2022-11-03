@@ -3,6 +3,7 @@ import http.server
 import socketserver
 import os
 import datetime
+import json
 from threading import local
 
 #print('source code for "http.server":', http.server.__file__)
@@ -11,6 +12,20 @@ default_message = "Hello World!"
 local_time = datetime.datetime.now()
 time_message = str(local_time.strftime('%X'))
 
+parameter_names = ["lowercase", "uppercase", "digits", "special"]
+
+
+def str_statistics(strng :str):
+    lowercases = len([x for x in strng if x.islower()])
+    uppers = len([x for x in strng if x.isupper()])
+    digits = len([x for x in strng if x.isnumeric()])
+    specials = len(strng) - lowercases - uppers - digits
+
+    return [lowercases, uppers, digits, specials]
+
+def generate_json_string(parameters, parameter_values):
+    json_dict = dict(zip(parameters, parameter_values))
+    return json.dumps(json_dict)
 
 class web_server(http.server.SimpleHTTPRequestHandler):
     
