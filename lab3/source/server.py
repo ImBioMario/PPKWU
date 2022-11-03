@@ -27,24 +27,16 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()            
             self.wfile.write(bytes(default_message.encode('utf-8')))
-        elif self.path.startswith('/cmd'):
+        elif self.path.startswith('/str='):
+            string_to_parse = self.path.split('=')[1]
+
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()   
-            split_path = self.path.split('=')
-            if split_path[1] == 'time':
-                self.wfile.write(bytes(time_message.encode('utf-8')))
-            if split_path[1].startswith('rev'):
-                rev_command_split = self.path.split('&')
-                if len(rev_command_split)>1:
-                    if rev_command_split[1].startswith('str'):
-                        str_command_split = rev_command_split[1].split('=')
-                        if len(str_command_split) > 1:
-                            rev_message = str_command_split[1][::-1]
-                            self.wfile.write(bytes(rev_message.encode('utf-8')))
-                
-        
+            self.wfile.write(bytes(string_to_parse.encode('utf-8')))
+            #self.wfile.write(bytes(default_message.encode('utf-8')))
+
         else:
             super().do_GET()
     
