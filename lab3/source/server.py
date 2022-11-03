@@ -4,6 +4,7 @@ import socketserver
 import os
 import datetime
 import json
+from urllib.parse import unquote
 from threading import local
 
 #print('source code for "http.server":', http.server.__file__)
@@ -43,14 +44,14 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.end_headers()            
             self.wfile.write(bytes(default_message.encode('utf-8')))
         elif self.path.startswith('/str='):
-            string_to_parse = str(self.path.split('/str=')[1])
-            json_string = generate_json_string(parameter_names, str_statistics(string_to_parse))
+            string_to_parse = self.path.split('/str=')[1]
+            string_decoded = unquote(string_to_parse)
+            json_string = generate_json_string(parameter_names, str_statistics(string_decoded))
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
-            self.send_header("Content-type", "text/html; charset=UTF-8")
+            self.send_header("Content-type", "application/json")
             self.end_headers()   
             self.wfile.write(bytes(json_string.encode('utf-8')))
-            #self.wfile.write(bytes(default_message.encode('utf-8')))
 
         else:
             super().do_GET()
