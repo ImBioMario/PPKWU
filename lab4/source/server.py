@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 
 parameter_names = ["sum", "sub", "mul", "div", "mod"]
 
-server = Flask()
+app = Flask(__name__)
 
 def get_operation_stats(num1 :int, num2: int):
     return [num1+num2, num1-num2, num1*num2, num1//num2, num1%num2]
@@ -11,9 +11,9 @@ def get_operation_stats(num1 :int, num2: int):
 
 @app.get('/')
 def generate_stats():
-    num1 = request.args.get('num1')
-    num2 = request.args.get('num2')
+    num1 = request.args.get('num1',type = int)
+    num2 = request.args.get('num2', type = int)
     my_json = jsonify(dict(zip(parameter_names, get_operation_stats(num1, num2))))
     return my_json
 
-server.run(debug=True, port=4080, host='0.0.0.0')
+app.run(port=4080, host='0.0.0.0')
