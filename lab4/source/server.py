@@ -15,3 +15,5 @@ def generate_stats():
     num2 = request.args.get('num2')
     my_json = jsonify(dict(zip(parameter_names, get_operation_stats(num1, num2))))
     return my_json
+
+server.run(debug=True, port=4080, host='0.0.0.0')
