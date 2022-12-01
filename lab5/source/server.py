@@ -11,8 +11,8 @@ def get_operation_stats(num1 :int, num2: int):
 
 @app.post('/')
 def generate_stats():
-    data = request.get_json
-
+    data = request.json
+    print(data)
 
 
     return data
