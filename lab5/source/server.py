@@ -32,7 +32,6 @@ def generate_stats():
 
     final_response = {**response_str, **response_nums}
 
-
     return final_response
 
 app.run(port=4080, host='0.0.0.0')
