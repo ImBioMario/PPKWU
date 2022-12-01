@@ -22,16 +22,17 @@ def str_statistics(strng :str):
 @app.post('/')
 def generate_stats():
     response_str = {}
-    respons_nums = {}
+    response_nums = {}
     data = request.json
     if 'str' in data:
-        response_str = zip(parameter_names_str, str_statistics(data['str']))
+        response_str = dict(zip(parameter_names_str, str_statistics(data['str'])))
+
     if 'num1' in data and 'num2' in data:
-        response_nums = zip(parameter_names_nums, get_operation_stats(data['num1'], data['num2']))
+        response_nums = dict(zip(parameter_names_nums, get_operation_stats(data['num1'], data['num2'])))
 
     final_response = {**response_str, **response_nums}
 
 
-    return data
+    return final_response
 
 app.run(port=4080, host='0.0.0.0')
