@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from flask import Flask, request, jsonify, Response
 import xmltodict
+import dicttoxml
 
 parameter_names_nums = ["sum", "sub", "mul", "div", "mod"]
 parameter_names_str = ["lowercase", "uppercase", "digits", "special"]
@@ -25,13 +26,17 @@ def generate_stats():
     response_nums = {}
     data_xml = request.get_data()
     data = xmltodict.parse(data_xml)
-    # if 'str' in data:
-    #     response_str = dict(zip(parameter_names_str, str_statistics(data['str'])))
+    if 'root' in data:
+        data_to_parse = data['root']
+        if 'str' in data_to_parse:
+            response_str = dict(zip(parameter_names_str, str_statistics(data_to_parse['str'])))
 
-    # if 'num1' in data and 'num2' in data:
-    #     response_nums = dict(zip(parameter_names_nums, get_operation_stats(data['num1'], data['num2'])))
+        if 'num1' in data_to_parse and 'num2' in data_to_parse:
+            response_nums = dict(zip(parameter_names_nums, get_operation_stats(data_to_parse['num1'], data_to_parse['num2'])))
+    if 'str' in data:
+        response_str = dict(zip(parameter_names_str, str_statistics(data['str'])))
 
     # return {**response_str, **response_nums}
-    return Response(data_xml, mimetype='application/xml')
+    return Response(dicttoxml.dicttoxml({**response_str, **response_nums}), mimetype='application/xml')
 
 app.run(port=4080, host='0.0.0.0')
