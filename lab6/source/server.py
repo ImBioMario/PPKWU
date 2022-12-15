@@ -38,7 +38,6 @@ def generate_stats():
         response_str = dict(zip(parameter_names_str, str_statistics(data['str'])))
 
     return_xml = dicttoxml.dicttoxml({**response_str, **response_nums}, attr_type = False)
-    # return {**response_str, **response_nums}
     return Response(parseString(return_xml).toprettyxml(), mimetype='application/xml')
 
 app.run(port=4080, host='0.0.0.0')
