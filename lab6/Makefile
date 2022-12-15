@@ -1,5 +1,5 @@
-docker_name:=ppkwu_lab5_python
-container_name:=ppkwu_lab5_container_python
+docker_name:=ppkwu_lab6_python
+container_name:=ppkwu_lab6_container_python
 
 docker_build:
 	echo "Prepare docker here..."
