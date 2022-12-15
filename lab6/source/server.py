@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify, Response
 import xmltodict
 import dicttoxml
+from xml.dom.minidom import parseString
 
 parameter_names_nums = ["sum", "sub", "mul", "div", "mod"]
 parameter_names_str = ["lowercase", "uppercase", "digits", "special"]
@@ -32,11 +33,12 @@ def generate_stats():
             response_str = dict(zip(parameter_names_str, str_statistics(data_to_parse['str'])))
 
         if 'num1' in data_to_parse and 'num2' in data_to_parse:
-            response_nums = dict(zip(parameter_names_nums, get_operation_stats(data_to_parse['num1'], data_to_parse['num2'])))
+            response_nums = dict(zip(parameter_names_nums, get_operation_stats(int(data_to_parse['num1']), int(data_to_parse['num2']))))
     if 'str' in data:
         response_str = dict(zip(parameter_names_str, str_statistics(data['str'])))
 
+    return_xml = dicttoxml.dicttoxml({**response_str, **response_nums}, attr_type = False)
     # return {**response_str, **response_nums}
-    return Response(dicttoxml.dicttoxml({**response_str, **response_nums}), mimetype='application/xml')
+    return Response(parseString(return_xml).toprettyxml(), mimetype='application/xml')
 
 app.run(port=4080, host='0.0.0.0')
