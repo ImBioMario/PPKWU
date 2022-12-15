@@ -23,13 +23,15 @@ def str_statistics(strng :str):
 def generate_stats():
     response_str = {}
     response_nums = {}
-    data = request.json
-    if 'str' in data:
-        response_str = dict(zip(parameter_names_str, str_statistics(data['str'])))
+    data_xml = request.get_data()
+    data = xmltodict.parse(data_xml)
+    # if 'str' in data:
+    #     response_str = dict(zip(parameter_names_str, str_statistics(data['str'])))
 
-    if 'num1' in data and 'num2' in data:
-        response_nums = dict(zip(parameter_names_nums, get_operation_stats(data['num1'], data['num2'])))
+    # if 'num1' in data and 'num2' in data:
+    #     response_nums = dict(zip(parameter_names_nums, get_operation_stats(data['num1'], data['num2'])))
 
-    return {**response_str, **response_nums}
+    # return {**response_str, **response_nums}
+    return data
 
 app.run(port=4080, host='0.0.0.0')
