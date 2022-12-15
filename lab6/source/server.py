@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import xmltodict
 
 parameter_names_nums = ["sum", "sub", "mul", "div", "mod"]
@@ -32,6 +32,6 @@ def generate_stats():
     #     response_nums = dict(zip(parameter_names_nums, get_operation_stats(data['num1'], data['num2'])))
 
     # return {**response_str, **response_nums}
-    return data
+    return Response(data_xml, mimetype='application/xml')
 
 app.run(port=4080, host='0.0.0.0')
